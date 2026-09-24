@@ -19,9 +19,12 @@ const assert = require('node:assert/strict');
       await page.goto(pathToFileURL(path.resolve(__dirname, '../native/Web/index.html')).href);
       await page.evaluate(c => document.documentElement.classList.add(...c.split(' ')), classes);
       await page.evaluate(() => document.fonts.ready);
-      for (const keyboard of [0, 320, 0]) {
+      // Let startup device detection finish before measuring keyboard changes.
+      await page.waitForTimeout(1400);
+      let initialBounds;
+      for (const keyboard of [0, 320, 380, 0, 320, 0]) {
         await page.evaluate(k => window.__onNativeKeyboardChange(k, 0.15, 7), keyboard);
-        await page.waitForFunction(target => Math.abs(document.querySelector('#app').getBoundingClientRect().bottom - target) < 1, height - keyboard);
+        await page.waitForTimeout(200);
         const bounds = await page.evaluate(() => {
           const rect = s => {
             const r = document.querySelector(s).getBoundingClientRect();
@@ -31,9 +34,12 @@ const assert = require('node:assert/strict');
         });
         assert.equal(bounds.app.top, 0);
         assert.equal(bounds.app.width, width);
-        assert.ok(Math.abs(bounds.app.bottom - (height - keyboard)) < 2, JSON.stringify(bounds));
+        assert.ok(Math.abs(bounds.app.bottom - height) < 2, JSON.stringify(bounds));
         assert.ok(bounds.editor.height > 50, JSON.stringify(bounds));
-        assert.ok(bounds.bottom.bottom <= height - keyboard + 1, JSON.stringify(bounds));
+        assert.ok(bounds.bottom.bottom <= height + 1, JSON.stringify(bounds));
+        if (!initialBounds) initialBounds = bounds;
+        assert.deepEqual(bounds, initialBounds, 'Keyboard must overlay without moving or resizing the page');
+        assert.equal(await page.evaluate(() => document.body.classList.contains('kb-open')), keyboard > 20);
       }
       console.log(`PASS ${width}x${height}: full viewport, keyboard open/close`);
       await page.close();

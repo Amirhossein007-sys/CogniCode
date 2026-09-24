@@ -45,7 +45,6 @@
   --editor-font-size: 16px;
   --mono-size: var(--editor-font-size, 16px);
   --lh: 25px;
-  --kb: 0px;
   --radius: 20px;
   --sheet-ease: cubic-bezier(0.32, 0.72, 0, 1);
   /* ── توکن‌های وابسته به تم (تاریک - پیش‌فرض) ── */
@@ -124,8 +123,8 @@ svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width:
   top: 0;
   left: 0;
   right: 0;
-  bottom: var(--kb, 0px);
-  /* Let top/bottom determine height so keyboard overlap shrinks the editor. */
+  bottom: 0;
+  /* The keyboard overlays the page without resizing the editor or toolbars. */
   min-height: 0;
   max-height: 100dvh;
   z-index: 1;
@@ -504,8 +503,6 @@ html[data-theme="light"] .zoom-hud {
   box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.35);
   transition: margin-bottom 0.15s ease;
 }
-body.kb-open .bottom { margin-bottom: 6px; }
-body.kb-open .playbar, body.kb-open .micro-hint { display: none; }
 .playbar { padding: 8px 12px 1px; }
 .play {
   position: relative; overflow: hidden;

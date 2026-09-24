@@ -2187,28 +2187,10 @@ try {
 
   /* ── موتور نیتیو همگام‌سازی کیبورد اپل (iOS 18 Native Keyboard Engine) ── */
   var nativeKbActive = false;
-  window.__onNativeKeyboardChange = function (height, duration, curve) {
+  window.__onNativeKeyboardChange = function (height) {
     nativeKbActive = true;
-    var durSec = Math.max(0.15, Math.min(0.45, duration || 0.25));
-    var appEl = document.getElementById('app');
-    if (appEl) {
-      appEl.style.transition = 'bottom ' + durSec + 's cubic-bezier(0.17, 0.59, 0.4, 0.77)';
-    }
-
-    if (height > 20) {
-      document.body.classList.add('kb-open');
-      document.documentElement.style.setProperty('--kb', Math.round(height) + 'px');
-      setTimeout(function () {
-        try {
-          if (document.activeElement === ta && typeof updateCaretLine === 'function') {
-            updateCaretLine();
-          }
-        } catch (_) {}
-      }, 50);
-    } else {
-      document.body.classList.remove('kb-open');
-      document.documentElement.style.setProperty('--kb', '0px');
-    }
+    // Track visibility for swipe-to-dismiss only; keep page geometry unchanged.
+    document.body.classList.toggle('kb-open', height > 20);
   };
 
   // پشتیبانی موازی برای حالت وب/PWA
@@ -2222,10 +2204,8 @@ try {
       var isInput = document.activeElement && (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT');
       if (kb > 80 && isInput) {
         document.body.classList.add('kb-open');
-        document.documentElement.style.setProperty('--kb', kb + 'px');
       } else {
         document.body.classList.remove('kb-open');
-        document.documentElement.style.setProperty('--kb', '0px');
       }
     }
     vv.addEventListener('resize', onWebVV);
