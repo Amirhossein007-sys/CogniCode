@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>کوگنی کد (CogniCode) — هوش مصنوعی کد برای آیفون</title>
+<meta name="description" content="کوگنی کد: کد بنویس؛ هوش مصنوعی بگوید چه می‌کند، به چه دردی می‌خورد و کجای کد خطا دارد.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' file:; style-src 'self' file:; font-src 'self' file:; img-src 'self' file: data: blob:; connect-src 'self' https:; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#0f172a">
+<meta name="color-scheme" content="dark light">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="CogniCode">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512.png">
+<link rel="apple-touch-icon-precomposed" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="sonar" aria-hidden="true"><canvas></canvas></div>
+
+<div id="app">
+
+  <!-- ═══ نوار بالا ═══ -->
+  <header class="topbar">
+    <div class="brand">
+      <img class="logo" src="icons/icon-192.png" alt="CogniCode" width="40" height="40">
+      <div class="brand-txt">
+        <b>کوگنی کد</b>
+        <span>CogniCode · هوش مصنوعی کد برای آیفون</span>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn theme-btn" id="btn-theme" aria-label="تغییر حالت روشن و تاریک">
+        <svg class="ico-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="ico-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="1.5" x2="12" y2="3.5"/><line x1="12" y1="20.5" x2="12" y2="22.5"/><line x1="4.6" y1="4.6" x2="6" y2="6"/><line x1="18" y1="18" x2="19.4" y2="19.4"/><line x1="1.5" y1="12" x2="3.5" y2="12"/><line x1="20.5" y1="12" x2="22.5" y2="12"/><line x1="4.6" y1="19.4" x2="6" y2="18"/><line x1="18" y1="6" x2="19.4" y2="4.6"/></svg>
+      </button>
+      <button class="icon-btn" id="btn-history" aria-label="تاریخچه">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </button>
+      <button class="icon-btn" id="btn-settings" aria-label="تنظیمات">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══ ادیتور ═══ -->
+  <section class="editor-shell">
+    <div class="editor" id="editor">
+      <div class="zoom-hud" id="zoom-hud" aria-hidden="true">۱۰۰٪</div>
+      <div class="gutter-wrap">
+        <div class="gutter" id="gutter" aria-hidden="true">1</div>
+        <div class="gutter-errs" id="gutter-errs" aria-hidden="true"></div>
+      </div>
+      <div class="code-area" id="code-area">
+        <div class="cur-line" id="cur-line" aria-hidden="true" style="display:none"></div>
+        <div class="err-overlay" id="err-overlay" aria-hidden="true"></div>
+        <pre id="highlight" aria-hidden="true"><code id="hl-code"></code></pre>
+        <textarea id="code" dir="ltr" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" wrap="off" enterkeyhint="return" placeholder="کدت را اینجا بنویس یا بچسبان..."></textarea>
+      </div>
+      <div class="scanline" id="scanline" hidden></div>
+    </div>
+  </section>
+
+  <!-- ═══ پنل مشکلات ═══ -->
+  <section class="problems" id="problems" hidden>
+    <header>
+      <svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+      <span class="p-title">مشکلات</span>
+      <b class="p-count" id="problems-count">۰</b>
+      <span class="p-flex"></span>
+      <button class="p-close" id="problems-close" aria-label="بستن پنل مشکلات">
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+    </header>
+    <div class="problems-scroll" id="problems-scroll">
+      <div class="magic-fix-card" id="magic-fix-card" hidden>
+        <div class="mf-head">
+          <div class="mf-title">
+            <span class="mf-sparkle">✨</span>
+            <b>اصلاح جادویی هوش مصنوعی</b>
+          </div>
+          <button class="btn-magic-fix" id="btn-magic-fix">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span>اعمال اصلاحات</span>
+          </button>
+        </div>
+        <p class="mf-desc" id="mf-desc"></p>
+        <div class="mf-diff-toggle-row">
+          <button class="btn-diff-toggle" id="btn-diff-toggle" type="button">
+            <svg viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M8 21H3v-5"/><path d="M21 3l-7.5 7.5"/><path d="M3 21l7.5-7.5"/></svg>
+            <span id="diff-toggle-text">مشاهده مقایسه‌ای تغییرات (Split Diff)</span>
+          </button>
+        </div>
+        <div class="diff-viewer-wrap" id="diff-viewer-wrap" hidden>
+          <div class="diff-viewer-head">
+            <span class="diff-badge del">🔴 قبل (باگ‌دار)</span>
+            <span class="diff-badge add">🟢 بعد (اصلاح‌شده)</span>
+          </div>
+          <div class="diff-viewer-body" id="diff-viewer-body"></div>
+        </div>
+      </div>
+      <div class="p-list" id="problems-list"></div>
+    </div>
+  </section>
+
+  <!-- ═══ کیبورد کمکی یکپارچه با قابلیت سوایپ کامل ═══ -->
+  <div class="keys" id="keys" role="toolbar" aria-label="ابزارهای ویرایشگر">
+    <!-- ورودی‌های فایل مخفی و امن -->
+    <input type="file" id="file-input" class="sr-only-input" accept=".js,.ts,.jsx,.tsx,.py,.swift,.html,.htm,.css,.scss,.json,.c,.cpp,.h,.cs,.java,.kt,.php,.rb,.go,.rs,.sql,.sh,.bash,.txt,text/*" style="display:none !important">
+    <input type="file" id="camera-input" class="sr-only-input" accept="image/*" capture="environment" style="display:none !important">
+
+    <div class="keys-scroll" id="keys-scroll">
+      <!-- ابزارهای کلیپ‌بورد و فایل -->
+      <button class="key sq" id="key-paste" title="چسباندن متن از کلیپ‌بورد" aria-label="چسباندن">
+        <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+      </button>
+      <button class="key sq" id="key-open" title="باز کردن فایل کد از دستگاه" aria-label="باز کردن فایل کد">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+      </button>
+      <button class="key sq" id="key-camera" title="اسکن تصویر کد با هوش مصنوعی" aria-label="اسکن کد با دوربین">
+        <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      </button>
+
+      <div class="keys-sep" aria-hidden="true"></div>
+
+      <!-- تاریخچه تغییرات ادیتور -->
+      <button class="key sq" id="key-undo" title="واگرد (Undo)" aria-label="واگرد" disabled>
+        <svg viewBox="0 0 24 24"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+      </button>
+      <button class="key sq" id="key-redo" title="انجام دوباره (Redo)" aria-label="انجام دوباره" disabled>
+        <svg viewBox="0 0 24 24"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg>
+      </button>
+
+      <div class="keys-sep" aria-hidden="true"></div>
+
+      <!-- تورفتگی مستقیم (Tab) و کلیدهای ناوبری مکان‌نما -->
+      <button class="key tab-key" data-ins="    " title="فاصله تورفتگی (Tab)" aria-label="تورفتگی">
+        <span class="tab-sym">⇥</span>
+        <span class="tab-lbl">Tab</span>
+      </button>
+      <button class="key sq nav-btn" data-nav="-1" title="مکان‌نما به چپ" aria-label="مکان‌نما به چپ">
+        <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </button>
+      <button class="key sq nav-btn" data-nav="1" title="مکان‌نما به راست" aria-label="مکان‌نما به راست">
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+      <button class="key sq nav-btn" data-nav="up" title="مکان‌نما به سطر بالا" aria-label="مکان‌نما به سطر بالا">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+      </button>
+      <button class="key sq nav-btn" data-nav="down" title="مکان‌نما به سطر پایین" aria-label="مکان‌نما به سطر پایین">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+      </button>
+
+      <div class="keys-sep" aria-hidden="true"></div>
+
+      <!-- کدهای نمونه و پاک‌سازی -->
+      <button class="key sq" id="key-sample" title="بارگذاری کد نمونه" aria-label="کد نمونه">
+        <svg viewBox="0 0 24 24"><path d="M12 2l2.4 5 5.6.8-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.6-.8z"/></svg>
+      </button>
+      <button class="key sq danger" id="key-clear" title="پاک‌سازی ادیتور (۲ بار بزنید)" aria-label="پاک کردن">
+        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+      </button>
+
+      <div class="keys-sep" aria-hidden="true"></div>
+
+      <!-- پرانتزها و جفت‌نمادهای هوشمند -->
+      <button class="key pair" data-op="(" data-cl=")" title="پرانتز" aria-label="پرانتز">(&#8202;)</button>
+      <button class="key pair" data-op="{" data-cl="}" title="آکولاد" aria-label="آکولاد">{&#8202;}</button>
+      <button class="key pair" data-op="[" data-cl="]" title="براکت" aria-label="براکت">[&#8202;]</button>
+      <button class="key pair" data-op="&lt;" data-cl="&gt;" title="علامت کوچکتری بزرگتری" aria-label="زاویه‌ای">&lt;&#8202;&gt;</button>
+      <button class="key pair" data-op='"' data-cl='"' title="دابل کوتیشن" aria-label="دابل کوت">"&#8202;"</button>
+      <button class="key pair" data-op="'" data-cl="'" title="تک کوتیشن" aria-label="تک کوت">'&#8202;'</button>
+      <button class="key pair" data-op="`" data-cl="`" title="بک‌تیک" aria-label="بک‌تیک">`&#8202;`</button>
+
+      <div class="keys-sep" aria-hidden="true"></div>
+
+      <!-- عملگرها و نمادهای پرکاربرد -->
+      <button class="key op-fat" data-ins="=&gt; " title="پیکان تابع (Fat Arrow)" aria-label="پیکان تابع">=&gt;</button>
+      <button class="key" data-ins=";" title="سِمی‌کالن" aria-label="سمی کالن">;</button>
+      <button class="key" data-ins="=" title="مساوی" aria-label="مساوی">=</button>
+      <button class="key" data-ins=":" title="دو نقطه" aria-label="دو نقطه">:</button>
+      <button class="key" data-ins="," title="ویرگول" aria-label="ویرگول">,</button>
+      <button class="key" data-ins="." title="نقطه" aria-label="نقطه">.</button>
+      <button class="key" data-ins="+" title="جمع" aria-label="جمع">+</button>
+      <button class="key" data-ins="-" title="تفریق" aria-label="منفی">-</button>
+      <button class="key" data-ins="*" title="ضرب" aria-label="ضرب">*</button>
+      <button class="key" data-ins="/" title="تقسیم" aria-label="اسلش">/</button>
+      <button class="key" data-ins="!" title="علامت تعجب" aria-label="تعجب">!</button>
+      <button class="key" data-ins="?" title="علامت سوال" aria-label="علامت سوال">?</button>
+      <button class="key" data-ins="_" title="خط زیرین" aria-label="آندرلاین">_</button>
+      <button class="key" data-ins="$" title="علامت دلار" aria-label="دلار">$</button>
+      <button class="key" data-ins="&amp;" title="اند" aria-label="اند">&amp;</button>
+      <button class="key" data-ins="|" title="پایپ" aria-label="پایپ">|</button>
+      <button class="key" data-ins="#" title="هشتگ / شارپ" aria-label="شارپ">#</button>
+      <button class="key" data-ins="%" title="درصد / باقیمانده" aria-label="درصد">%</button>
+      <button class="key" data-ins="@" title="ات‌ساین" aria-label="ات‌ساین">@</button>
+      <button class="key" data-ins="\" title="بک‌اسلش" aria-label="بک‌اسلش">\</button>
+      <button class="key" data-ins="^" title="توان / توان بیتی" aria-label="توان">^</button>
+      <button class="key" data-ins="~" title="تیلدا" aria-label="تیلدا">~</button>
+    </div>
+  </div>
+
+  <!-- ═══ نوار پایین ═══ -->
+  <footer class="bottom">
+    <div class="playbar">
+      <button class="play" id="btn-play">
+        <svg class="play-ico" viewBox="0 0 24 24"><path d="M8 5.14v13.72c0 .8.87 1.3 1.56.88l10.54-6.86a1.05 1.05 0 0 0 0-1.76L9.56 4.26A1.04 1.04 0 0 0 8 5.14z"/></svg>
+        <span class="play-label">تحلیل کد</span>
+      </button>
+      <p class="micro-hint">کد اجرا نمی‌شود — فقط بررسی و توضیح داده می‌شود</p>
+    </div>
+    <div class="statusbar">
+      <button class="st-lang" id="st-lang" aria-label="تغییر زبان کد"><i class="lang-dot" id="st-dot"></i><span id="st-lang-txt">متنی</span></button>
+      <span class="st-item" id="st-pos">۱:۱</span>
+      <span class="st-item" id="st-lines">۰ خط</span>
+      <span class="st-item st-err" id="st-err" hidden></span>
+      <span class="st-flex"></span>
+      <button class="st-ai" id="st-ai" title="وضعیت هوش مصنوعی (کلیک برای باز کردن تنظیمات)" aria-label="وضعیت اتصال هوش مصنوعی"><i class="ai-dot off"></i><span id="st-ai-txt">AI آفلاین</span></button>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══ بک‌دراپ ═══ -->
+<div class="backdrop" id="backdrop"></div>
+
+<!-- ═══ شیت نتیجه ═══ -->
+<section class="sheet" id="sheet-result" role="dialog" aria-modal="true" aria-label="نتیجه تحلیل">
+  <div class="grabber"></div>
+  <header class="sheet-head">
+    <div class="res-meta">
+      <span class="verdict ok" id="res-verdict">✓ کد سالم است</span>
+      <span class="res-file" id="res-file" dir="ltr">untitled.txt</span>
+      <span class="mode-badge" id="res-mode">هوش مصنوعی</span>
+    </div>
+    <div class="sheet-tools">
+      <button class="icon-btn" id="res-copy" aria-label="کپی توضیح">
+        <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      </button>
+      <button class="icon-btn" id="res-share" aria-label="اشتراک‌گذاری کارت">
+        <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+      <button class="icon-btn" id="res-again" aria-label="تحلیل دوباره">
+        <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+      </button>
+      <button class="icon-btn" id="res-close" aria-label="بستن">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </header>
+  <div class="sheet-body">
+    <div class="loading" id="res-loading">
+      <img class="pulse-logo" src="icons/icon-192.png" alt="" width="66" height="66">
+      <p class="load-status" id="res-status">در حال خواندن کد…</p>
+      <div class="sk"><i></i><i></i><i></i><i></i></div>
+    </div>
+    <!-- دیاگرام تعاملی جریان ذهنی کد -->
+    <div class="mental-logic-map" id="mental-logic-map" hidden>
+      <div class="mlm-head">
+        <div class="mlm-head-title">
+          <span class="mlm-sparkle">🧭</span>
+          <b>جریان ذهنی و نقشه اجرای کد</b>
+        </div>
+        <span class="mlm-sub">مسیر داده در حافظه</span>
+      </div>
+      <div class="mlm-flow" id="mlm-flow"></div>
+    </div>
+    <div class="md" id="res-body" hidden></div>
+  </div>
+</section>
+
+<!-- ═══ شیت کارت تصویری سوپرلوکس (Social Card Ray.so style) ═══ -->
+<section class="sheet" id="sheet-social-card" role="dialog" aria-modal="true" aria-label="کارت تصویری کد">
+  <div class="grabber"></div>
+  <header class="sheet-head">
+    <h2>کارت گرافیکی کد (Ray.so Style)</h2>
+    <div class="sheet-tools">
+      <button class="icon-btn" data-close aria-label="بستن">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </header>
+  <div class="sheet-body social-card-body">
+    <p class="social-hint">تصویر آماده برای اشتراک‌گذاری در لینکدین، توییتر و تلگرام با بالاترین وضوح</p>
+    <div class="social-preview-wrap">
+      <canvas id="social-canvas" width="1200" height="720"></canvas>
+    </div>
+    <div class="social-actions-bar">
+      <button class="social-btn main" id="btn-social-download">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>دانلود تصویر کارت (PNG)</span>
+      </button>
+      <button class="social-btn sub" id="btn-social-share-native">
+        <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        <span>ارسال مستقیم</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ شیت تاریخچه ═══ -->
+<section class="sheet" id="sheet-history" role="dialog" aria-modal="true" aria-label="تاریخچه">
+  <div class="grabber"></div>
+  <header class="sheet-head">
+    <h2>تاریخچه تحلیل‌ها</h2>
+    <div class="sheet-tools">
+      <button class="icon-btn" id="hist-clear" aria-label="پاک کردن تاریخچه">
+        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+      </button>
+      <button class="icon-btn" data-close aria-label="بستن">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </header>
+  <div class="sheet-body">
+    <div class="hist-list" id="hist-list"></div>
+  </div>
+</section>
+
+<!-- ═══ شیت تنظیمات ═══ -->
+<section class="sheet" id="sheet-settings" role="dialog" aria-modal="true" aria-label="تنظیمات">
+  <div class="grabber"></div>
+  <header class="sheet-head">
+    <h2>تنظیمات</h2>
+    <div class="sheet-tools">
+      <button class="icon-btn" data-close aria-label="بستن">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </header>
+  <div class="sheet-body">
+    <div class="form">
+      <div class="form-card">
+        <label class="fld">
+          <span>آدرس سرویس هوش مصنوعی <small>(گپ جی پی تی / OpenAI API)</small></span>
+          <input id="cfg-base" dir="ltr" type="url" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="https://api.gapgpt.app/v1">
+          <small class="hint-line">پیش‌فرض: https://api.gapgpt.app/v1 (سرویس ایرانی گپ‌جی‌پی‌تی بدون تحریم و بدون نیاز به پروکسی)</small>
+        </label>
+        <label class="fld">
+          <span>پروکسی CORS <small>(اختیاری — فقط برای سرورهایی که محدودیت مبدا دارند)</small></span>
+          <input id="cfg-proxy" dir="ltr" type="url" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="https://your-worker.workers.dev/?u={url}">
+          <small class="hint-line">گپ جی پی تی و اپ نصبی نیازی به پروکسی ندارند؛ درخواست‌ها مستقیم ارسال می‌شوند. ⚠️ اگر پروکسی وارد کنی، کلید و متن درخواست از آن سرور واسط می‌گذرد — فقط به پروکسی که خودت ساختی اعتماد کن.</small>
+        </label>
+        <label class="fld">
+          <span>کلید API (گپ جی پی تی / OpenAI)</span>
+          <div class="key-wrap">
+            <input id="cfg-key" dir="ltr" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="sk-...">
+            <button id="cfg-eye" class="icon-btn" aria-label="نمایش یا مخفی کردن کلید">
+              <svg class="eye-on" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="eye-off" viewBox="0 0 24 24" hidden><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+          <small class="hint-line">کلید فقط در حافظه همین دستگاه و همین مرورگر می‌ماند و مستقیماً به سرور هوش مصنوعی انتخابی تو ارسال می‌گردد؛ جایی دیگر آپلود نمی‌شود. روی گوشی/سیستم اشتراکی ذخیره نکن.</small>
+        </label>
+        <label class="fld">
+          <span>نام مدل</span>
+          <input id="cfg-model" dir="ltr" list="model-list" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="gpt-4o-mini">
+          <datalist id="model-list">
+            <option value="gpt-4o-mini"></option>
+            <option value="gpt-4o"></option>
+            <option value="chatgpt-4o-latest"></option>
+            <option value="o3-mini"></option>
+            <option value="deepseek-chat"></option>
+          </datalist>
+        </label>
+        <div class="test-row">
+          <button class="ghost-btn" id="cfg-test">
+            <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            تست اتصال
+          </button>
+          <p class="test-line" id="cfg-test-line" hidden></p>
+        </div>
+      </div>
+      <label class="row">
+        <span class="row-txt">ذخیره تاریخچه روی گوشی<small>تحلیل‌های قبلی برای مرور بعدی</small></span>
+        <span class="switch"><input type="checkbox" id="cfg-hist" checked><i></i></span>
+      </label>
+      <div class="about">
+        <b>کوگنی کد (CogniCode) نسخه ۱٫۰</b>
+        <p>تحلیل‌گر هوشمند کد، طراحی‌شده برای آیفون به سبک VS Code با پشتیبانی از ۳۴ زبان برنامه‌نویسی. این برنامه کد را اجرا نمی‌کند؛ فقط صحت آن را بررسی و رفتارش را توضیح می‌دهد.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ شیت انتخاب: هوش مصنوعی تنظیم نشده ═══ -->
+<section class="sheet" id="sheet-api" role="dialog" aria-modal="true" aria-label="انتخاب نوع بررسی">
+  <div class="grabber"></div>
+  <header class="sheet-head">
+    <h2>⚠️ هوش مصنوعی تنظیم نشده</h2>
+    <div class="sheet-tools">
+      <button class="icon-btn" data-close aria-label="بستن">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </header>
+  <div class="sheet-body">
+    <p class="api-msg">کلید API تنظیم نیست؛ برای تحلیل کامل با هوش مصنوعی اول آن را تنظیم کن. یا همین حالا با <b>موتور داخلی (آفلاین)</b> بررسی کن — خطاهای ساختاری و کدنبودنِ متن را دقیق می‌گوید ولی توضیح کامل «به چه دردی می‌خورد» را نمی‌دهد.</p>
+    <div class="api-choices">
+      <button class="choice" id="api-choice-offline">
+        <b>⚡ بررسی آفلاین</b>
+        <span>بدون اینترنت — بررسی ساختار، خطاها و تشخیص زبان با موتور داخلی</span>
+      </button>
+      <button class="choice setup" id="api-choice-setup">
+        <b>🤖 تنظیم API هوش مصنوعی</b>
+        <span>کلید API گپ جی پی تی یا OpenAI را وارد کن و تحلیل کامل با توضیح چهاربخشی داشته باش</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ شیت انتخاب زبان ═══ -->
+<section class="sheet" id="sheet-lang" role="dialog" aria-modal="true" aria-label="زبان کد">
+  <div class="grabber"></div>
+  <header class="sheet-head">
+    <h2>زبان کد</h2>
+    <div class="sheet-tools">
+      <button class="icon-btn" data-close aria-label="بستن">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </header>
+  <div class="sheet-body">
+    <div class="lang-list" id="lang-list"></div>
+  </div>
+</section>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="syntax.js"></script>
+<script src="checker.js"></script>
+<script src="sonar.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
