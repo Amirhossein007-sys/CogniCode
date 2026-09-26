@@ -1,9 +1,27 @@
 """Validate launch metadata and bundled web resources before packaging an IPA."""
 import plistlib
+import json
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def verify_identifiers(app_id, widget_id):
+    assert app_id and widget_id, "Missing app or widget bundle identifier"
+    assert widget_id.startswith(app_id + "."), (
+        f"Widget identifier {widget_id!r} must start with {app_id + '.'!r}"
+    )
+
+
+def verify_build_settings(path):
+    with Path(path).open(encoding="utf-8-sig") as stream:
+        targets = {item["target"]: item["buildSettings"] for item in json.load(stream)}
+    verify_identifiers(
+        targets["CogniCode"]["PRODUCT_BUNDLE_IDENTIFIER"],
+        targets["CogniCodeWidgets"]["PRODUCT_BUNDLE_IDENTIFIER"],
+    )
+    print("Generated app/widget bundle identifiers verified")
 
 
 def verify(bundle=None):
@@ -15,6 +33,10 @@ def verify(bundle=None):
     assert (ROOT / "native/CogniCode/LaunchScreen.storyboard").is_file()
     assert expected.get("NSSupportsLiveActivities") is True
     assert expected.get("CADisableMinimumFrameDurationOnPhone") is True
+    assert expected.get("CFBundleIdentifier") == "$(PRODUCT_BUNDLE_IDENTIFIER)"
+    with (ROOT / "native/CogniCodeWidgets/Info.plist").open("rb") as stream:
+        widget_source = plistlib.load(stream)
+    assert widget_source.get("CFBundleIdentifier") == "$(PRODUCT_BUNDLE_IDENTIFIER)"
     if bundle is None:
         print("Source launch configuration verified")
         return
@@ -32,6 +54,7 @@ def verify(bundle=None):
     assert widget.is_dir(), "Missing embedded Live Activity extension"
     with (widget / "Info.plist").open("rb") as stream:
         widget_info = plistlib.load(stream)
+    verify_identifiers(actual.get("CFBundleIdentifier"), widget_info.get("CFBundleIdentifier"))
     assert widget_info["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.widgetkit-extension"
     assert (widget / "Assets.car").is_file(), "Missing Live Activity logo assets"
     for source_file in (ROOT / "native/Web").rglob("*"):
@@ -44,4 +67,7 @@ def verify(bundle=None):
 
 
 if __name__ == "__main__":
-    verify(sys.argv[1] if len(sys.argv) > 1 else None)
+    if len(sys.argv) > 1 and sys.argv[1] == "--build-settings":
+        verify_build_settings(sys.argv[2])
+    else:
+        verify(sys.argv[1] if len(sys.argv) > 1 else None)

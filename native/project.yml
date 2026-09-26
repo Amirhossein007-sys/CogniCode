@@ -20,7 +20,6 @@ targets:
     type: application
     platform: iOS
     deploymentTarget: "18.0"
-    bundleId: com.cognicode.app
     dependencies:
       - target: CogniCodeWidgets
         embed: true
@@ -33,6 +32,7 @@ targets:
         buildPhase: resources
     settings:
       base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.cognicode.CogniCode
         # Use the checked-in plist. XcodeGen's `info` generates/overwrites it.
         INFOPLIST_FILE: CogniCode/Info.plist
         TARGETED_DEVICE_FAMILY: "1"
@@ -61,7 +61,7 @@ targets:
       - path: CogniCode/Shared/ActivityAttributes.swift
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.cognicode.app.widgets
+        PRODUCT_BUNDLE_IDENTIFIER: com.cognicode.CogniCode.widgets
         INFOPLIST_FILE: CogniCodeWidgets/Info.plist
         GENERATE_INFOPLIST_FILE: NO
         SWIFT_VERSION: "5.10"
