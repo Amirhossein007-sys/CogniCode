@@ -65,7 +65,17 @@ try {
 
   /* ── کنترلر Dynamic Island واقعی آیفون (اتصال مستقیم به Live Activities سخت‌افزاری) ── */
   var DynamicIsland = {
+    timer: 0,
+    show: function (state, text) {
+      var activity = $('analysis-activity');
+      clearTimeout(this.timer);
+      activity.hidden = false;
+      activity.dataset.state = state;
+      activity.querySelector('span').textContent = text;
+      if (state !== 'running') this.timer = setTimeout(function () { activity.hidden = true; }, 2500);
+    },
     start: function (title, sub) {
+      this.show('running', sub || title);
       haptic('rigid');
       if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.dynamicIslandBridge) {
         try {
@@ -77,6 +87,7 @@ try {
       }
     },
     stop: function (state) {
+      this.show(state, state === 'error' ? 'بررسی کد نیاز به توجه دارد' : 'بررسی کد تمام شد');
       if (state === 'error') {
         haptic('error');
       } else {
@@ -1582,6 +1593,7 @@ try {
     var code = ta.value;
     if (!code.trim()) { toast('اول چند خط کد بنویس ✍️'); return; }
     analyzing = true; analyzed = false;
+    try {
     DynamicIsland.start('تحلیل هوشمند کد', useAI ? 'در حال ارتباط با هوش مصنوعی…' : 'در حال بررسی ساختار کد…');
     if (window.Sonar && window.Sonar.setPulse) {
       window.Sonar.setPulse('analyzing');
@@ -1651,7 +1663,7 @@ try {
       return;
     }
 
-    DynamicIsland.stop('done');
+    DynamicIsland.stop(aiErr ? 'error' : 'done');
     if (window.Sonar && window.Sonar.setPulse) {
       window.Sonar.setPulse('healthy');
     }
@@ -1673,6 +1685,18 @@ try {
     stopLoading();
     renderResult(md, mode, warns.length > 0, ai);
     addHistory(lastSummary(md, ai), 'ok');
+    } catch (error) {
+      DynamicIsland.stop('error');
+      stopLoading();
+      toast('بررسی کامل نشد؛ دوباره تلاش کنید');
+      console.error('Analysis failed', error);
+    } finally {
+      analyzing = false;
+      scanline.hidden = true;
+      playBtn.disabled = false;
+      playBtn.classList.remove('loading');
+      playLabel.textContent = 'تحلیل کد';
+    }
   }
 
   function lastSummary(md, ai) {

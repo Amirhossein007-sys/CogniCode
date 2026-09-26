@@ -1,14 +1,14 @@
 /* کوگنی کد (CogniCode) — سرویس‌ورکر: کش پوستهٔ اپ برای اجرای آفلاین */
 'use strict';
 
-var CACHE = 'cognicode-v7-2026';
+var CACHE = 'cognicode-v8-wave-2026';
 var ASSETS = [
   './',
   './index.html',
   './styles.css',
   './syntax.js',
   './checker.js',
-  './sonar.js',
+  './sonar.js', './gradient-wave.js',
   './app.js',
   './manifest.webmanifest',
   './apple-touch-icon.png',
@@ -55,3 +55,4 @@ self.addEventListener('fetch', function (e) {
     })
   );
 });
+

@@ -13,6 +13,8 @@ def verify(bundle=None):
     assert expected.get("UILaunchStoryboardName") == "LaunchScreen"
     assert expected.get("UILaunchScreen", {}).get("UIColorName") == "LaunchBG"
     assert (ROOT / "native/CogniCode/LaunchScreen.storyboard").is_file()
+    assert expected.get("NSSupportsLiveActivities") is True
+    assert expected.get("CADisableMinimumFrameDurationOnPhone") is True
     if bundle is None:
         print("Source launch configuration verified")
         return
@@ -26,6 +28,12 @@ def verify(bundle=None):
     assert actual.get("UIDeviceFamily") == [1], "Expected an iPhone application"
     assert (bundle / "LaunchScreen.storyboardc").is_dir(), "Missing compiled launch storyboard"
     assert (bundle / "Assets.car").is_file(), "Missing compiled assets"
+    widget = bundle / "PlugIns/CogniCodeWidgets.appex"
+    assert widget.is_dir(), "Missing embedded Live Activity extension"
+    with (widget / "Info.plist").open("rb") as stream:
+        widget_info = plistlib.load(stream)
+    assert widget_info["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.widgetkit-extension"
+    assert (widget / "Assets.car").is_file(), "Missing Live Activity logo assets"
     for source_file in (ROOT / "native/Web").rglob("*"):
         if source_file.is_file():
             relative = source_file.relative_to(ROOT / "native")

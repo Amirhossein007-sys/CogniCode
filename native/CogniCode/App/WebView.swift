@@ -75,6 +75,20 @@ final class DynamicIslandManager {
     private var currentActivity: Any? = nil
     #endif
 
+    private init() {
+        #if canImport(ActivityKit)
+        if #available(iOS 16.2, *) {
+            // Analysis belongs to the previous web session after an app restart.
+            let abandoned = Activity<CogniCodeActivityAttributes>.activities
+            Task {
+                for activity in abandoned {
+                    await activity.end(nil, dismissalPolicy: .immediate)
+                }
+            }
+        }
+        #endif
+    }
+
     func startAnalysis(title: String) {
         #if canImport(ActivityKit)
         if #available(iOS 16.2, *), ActivityAuthorizationInfo().areActivitiesEnabled {
@@ -84,7 +98,7 @@ final class DynamicIslandManager {
             do {
                 let activity = try Activity<CogniCodeActivityAttributes>.request(
                     attributes: attributes,
-                    content: ActivityContent(state: state, staleDate: nil),
+                    content: ActivityContent(state: state, staleDate: Date().addingTimeInterval(120)),
                     pushType: nil
                 )
                 currentActivity = activity
@@ -100,7 +114,8 @@ final class DynamicIslandManager {
         if #available(iOS 16.2, *), let act = currentActivity as? Activity<CogniCodeActivityAttributes> {
             let finalState = CogniCodeActivityAttributes.ContentState(
                 status: success ? "پایان بررسی کد ✓" : "خطا در تحلیل ⚠️",
-                isAnalyzing: false
+                isAnalyzing: false,
+                failed: !success
             )
             Task {
                 await act.end(
@@ -301,7 +316,7 @@ struct WebViewContainer: UIViewRepresentable {
                         if action == "start" {
                             let title = (dict["title"] as? String) ?? "تحلیل کد هوش مصنوعی"
                             DynamicIslandManager.shared.startAnalysis(title: title)
-                        } else {
+                        } else if action == "stop" {
                             let state = (dict["state"] as? String) ?? "done"
                             DynamicIslandManager.shared.endAnalysis(success: state != "error")
                         }

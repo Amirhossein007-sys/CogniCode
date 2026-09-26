@@ -19,6 +19,5 @@ struct ContentView: View {
         // Web CSS owns safe-area padding. Keep the container edge-to-edge,
         // including the keyboard region, so the keyboard overlays the page.
         .ignoresSafeArea(.all)
-        .preferredColorScheme(.dark)
     }
 }

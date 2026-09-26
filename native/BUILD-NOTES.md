@@ -40,3 +40,37 @@
 طبق درخواست جدید، کیبورد باید روی صفحه ظاهر شود و چیدمان اصلی ثابت بماند. این تصمیم جایگزین رفتار کاهش ارتفاع صفحه در توضیحات قبلی است. وابستگی bottom صفحه به ارتفاع کیبورد، انیمیشن آن، مخفی‌کردن نوار اجرا و تغییر فاصلهٔ نوار پایین حذف شدند. callback کیبورد فقط وضعیت بازبودن را برای بستن با سوایپ نگه می‌دارد. فایل‌های وب با native/Web همگام شدند.
 
 آزمون هندسه اکنون ثابت‌ماندن قاب صفحه، ادیتور و نوار پایین را در چرخه‌های بازشدن، تغییر ارتفاع و بسته‌شدن کیبورد بررسی می‌کند. این آزمون callback را در مرورگر شبیه‌سازی می‌کند؛ اسکرول خودکار WKWebView هنگام فوکوس و رفتار واقعی کیبورد باید روی آیفون بررسی شوند. در این محیط ویندوز IPA ساخته نشده است.
+
+## GradientWave and analysis activity (2026-09-26)
+
+The supplied React component's MiniGl/simplex-noise engine is adapted in
+`gradient-wave.js`. This project is plain JavaScript (including WKWebView), so
+React, shadcn and Tailwind are not runtime dependencies. `sonar.js` manages
+its theme, visibility, reduced-motion and WebGL context lifecycle. Four
+palette entries avoid the original vec4 overflow; the mesh covers the whole
+viewport. The backing buffer uses CSS-pixel resolution and bounded mesh
+segments to limit GPU cost on high-DPR iPhones. requestAnimationFrame follows
+the browser's available cadence, without a hard 60 fps cap or frame-based speed.
+Actual 120 Hz delivery remains controlled by WebKit/iOS, power and thermal state.
+
+Native Live Activities now have an embedded WidgetKit extension, a shared
+attributes type, and the actual app logo. Compact leading shows the logo and
+trailing shows the waveform while analysis runs; completion/error use distinct
+symbols. Stale activities ask the user to reopen the app. Activities from the
+previous session are ended on the next analysis after relaunch.
+
+PWA has no ActivityKit API. Its accessible in-app status capsule provides the
+logo and animated bars (static with Reduce Motion). The native app also retains
+this in-app feedback when Live Activities are disabled or not visible. Apple's
+Live Activity animation limits do not permit promising a continuously running
+Now Playing equalizer; the native waveform is a status symbol with a transition
+when state changes, not an audio playback session.
+
+Validation on Windows: Node syntax checks, device-script tests (6 cases),
+check-layout.cjs (6 viewport configurations), check-gradient.cjs for web and
+native bundles (WebGL, themes, reduced motion, start/completion/dismissal,
+context loss/recovery). Screenshots: wave-light.png and wave-dark.png.
+Run tools/sync-native.ps1 before building. The IPA verifier now requires the
+embedded extension and its assets. The unsigned CI IPA must be signed together
+with its extension before installation. Xcode compilation, physical Dynamic
+Island presentation and ProMotion frame pacing still require a Mac/iPhone.

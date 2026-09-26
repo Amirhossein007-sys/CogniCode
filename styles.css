@@ -1663,3 +1663,27 @@ html[data-theme="light"] .mlm-node-title {
   width: 17px;
   height: 17px;
 }
+
+/* GradientWave: muted palettes plus stable surfaces preserve text contrast. */
+:root { --editor-bg: rgba(15,23,42,.94); --c-com: #94a3b8; --ph: #94a3b8; --gutter-txt: #94a3b8; }
+html[data-theme="light"] { --editor-bg: rgba(255,255,255,.96); --txt3: #475569; --ph: #64748b; --gutter-txt: #64748b; }
+.sonar { overflow: hidden; background: linear-gradient(140deg,#0f172a,#164e63,#312e81); }
+html[data-theme="light"] .sonar { background: linear-gradient(140deg,#f8fafc,#bae6fd,#e0e7ff); }
+.sonar::after { content: ''; position: absolute; inset: 0; background: rgba(15,23,42,.55); }
+html[data-theme="light"] .sonar::after { background: rgba(248,250,252,.55); }
+.editor { backdrop-filter: none; -webkit-backdrop-filter: none; }
+.analysis-activity { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 6px); left: 50%; transform: translateX(-50%); z-index: 2000; direction: ltr; display: flex; align-items: center; gap: 12px; max-width: calc(100vw - 24px); padding: 8px 14px; border-radius: 28px; background: #0f172a; color: #f8fafc; box-shadow: 0 4px 20px #0005; pointer-events: none; font-size: 12px; }
+.analysis-activity img { width: 26px; height: 26px; border-radius: 8px; }
+.activity-wave { display: flex; align-items: center; gap: 2px; height: 22px; color: #67e8f9; }
+.activity-wave i { width: 3px; height: 18px; background: currentColor; border-radius: 3px; animation: activity-wave .75s ease-in-out infinite alternate; }
+.activity-wave i:nth-child(2) { animation-delay: -.3s; height: 12px; }
+.activity-wave i:nth-child(3) { animation-delay: -.5s; }
+.activity-wave i:nth-child(4) { animation-delay: -.2s; height: 10px; }
+.activity-wave i:nth-child(5) { animation-delay: -.4s; height: 15px; }
+.analysis-activity[data-state="done"] .activity-wave { color: #6ee7b7; }
+.analysis-activity[data-state="error"] .activity-wave { color: #fda4af; }
+.analysis-activity:not([data-state="running"]) i { animation: none; transform: scaleY(.3); }
+@keyframes activity-wave { from { transform: scaleY(.3); } to { transform: scaleY(1); } }
+@media (prefers-reduced-motion: reduce) { .activity-wave i { animation: none; } }
+
+.code-area textarea::placeholder { opacity: 1; }
